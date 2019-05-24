@@ -7,7 +7,8 @@ import com.donali.bookapppractice.entities.Author
 
 class AuthorRepository(val authorDao: AuthorDao) {
 
-    fun getAuthorById(auId:Long):LiveData<Author> = authorDao.getAuthorById(auId)
+    fun getAuthorById(auid:Long):LiveData<Author> = authorDao.getAuthorById(auid)
+    fun getFirstAuthor():Author = authorDao.getFirstAuthor()
 
     fun getAll():LiveData<List<Author>> = authorDao.getAllAuthors()
 

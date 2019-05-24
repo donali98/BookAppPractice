@@ -14,6 +14,9 @@ interface AuthorDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAuthor(author: Author):Long
 
+    @Query("select * from author limit 1")
+    fun getFirstAuthor():Author
+
     @Query("select * from  author where id = :auId")
     fun getAuthorById(auId:Long):LiveData<Author>
 

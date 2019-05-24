@@ -9,6 +9,7 @@ import com.donali.bookapppractice.RoomDB
 import com.donali.bookapppractice.entities.Author
 import com.donali.bookapppractice.entities.AuthorBooks
 import com.donali.bookapppractice.entities.Book
+import com.donali.bookapppractice.entities.BookWithAuthors
 import com.donali.bookapppractice.repositories.AuthorBooksRepository
 import com.donali.bookapppractice.repositories.AuthorRepository
 import com.donali.bookapppractice.repositories.BookRepository
@@ -20,7 +21,6 @@ class BookViewModel(app: Application): AndroidViewModel(app) {
     private val authorRepository:AuthorRepository
     private val authorBooksRepository:AuthorBooksRepository
 
-    var insertionId = MutableLiveData<Long>()
 
     init {
         val bookDao = RoomDB.getInstance(app,viewModelScope).bookDao()
@@ -31,19 +31,17 @@ class BookViewModel(app: Application): AndroidViewModel(app) {
         authorBooksRepository = AuthorBooksRepository(authorBookDao)
     }
 
-    fun getAllBooks():LiveData<List<Book>> = bookRepository.getAll()
-    fun getAllAuthors():LiveData<List<Author>> = authorRepository.getAll()
-    fun getAllAuthorBooks():LiveData<List<AuthorBooks>> = authorBooksRepository.getAll()
-
+    fun getAllBooks():LiveData<List<BookWithAuthors>> = bookRepository.getAll()
+    fun getFirstAuthor():Author = authorRepository.getFirstAuthor()
+    fun getAuthorById(auId:Long):LiveData<Author> = authorRepository.getAuthorById(auId)
 
     fun insertBook(book: Book) = viewModelScope.launch(Dispatchers.IO){
         val bookId = bookRepository.insert(book)
-        insertionId.postValue(bookId)
+        val author = getFirstAuthor()
+        val authorId = author.id
+        insertAuthorBook(AuthorBooks(authorId,bookId))
     }
 
-    fun insertAuthor(author:Author) = viewModelScope.launch (Dispatchers.IO){
-        authorRepository.insert(author)
-    }
     fun insertAuthorBook(authorBook: AuthorBooks) = viewModelScope.launch (Dispatchers.IO){
         authorBooksRepository.insert(authorBook)
     }

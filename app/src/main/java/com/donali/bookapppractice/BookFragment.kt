@@ -10,11 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.donali.bookapppractice.entities.AuthorBooks
 import com.donali.bookapppractice.entities.Book
+import com.donali.bookapppractice.entities.BookWithAuthors
 import com.donali.bookapppractice.helpers.ActivityHelper
 import com.donali.bookapppractice.viewmodels.BookViewModel
 import java.security.acl.Owner
@@ -25,12 +27,9 @@ class BookFragment : Fragment() {
     lateinit var bookViewModel:BookViewModel
     lateinit var btnAdd:Button
     lateinit var etTitle:EditText
+    lateinit var bookAdapter:BookAdapter
 
-
-    var tempAuthorId:Long = 0
-    var tempBookId:Long = 0
-
-    val bookAdapter = BookAdapter()
+    var names:ArrayList<String> = arrayListOf()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,7 +45,19 @@ class BookFragment : Fragment() {
         btnAdd = view.findViewById(R.id.btn_add)
         etTitle = view.findViewById(R.id.et_title)
 
-        bookViewModel = ViewModelProviders.of(this).get(BookViewModel::class.java)
+        bookViewModel = activityHelper.getViewModel()
+        val clickListen = fun(bookWithAuthor:BookWithAuthors,tvBookName:TextView){
+            names = arrayListOf()
+            for(item in bookWithAuthor.authorsIdList){
+                names.add(item.toString())
+            }
+            val bookInfoFragment = BookInfoFragment.newInstance(tvBookName.text.toString(),names)
+            activityHelper.getCustomSupportFragmentMananager().beginTransaction()
+                    .replace(R.id.fl_main_container,bookInfoFragment)
+                    .addToBackStack("c")
+                    .commit()
+        }
+         bookAdapter = BookAdapter(clickListen)
 
         return view
     }
@@ -59,25 +70,10 @@ class BookFragment : Fragment() {
             layoutManager = activityHelper.getLayoutManager()
         }
         bookViewModel.getAllBooks().observe(this, Observer {
-            bookAdapter.setData(it)
-        })
-        bookViewModel.getAllAuthors().observe(this, Observer {
-            for (author in it){
-                tempAuthorId = author.id
-                break
-            }
+                bookAdapter.setData(it)
+
         })
 
-        bookViewModel.insertionId.observe(this, Observer {
-            bookViewModel.insertAuthorBook(AuthorBooks(tempAuthorId,it))
-            tempBookId = it
-        })
-
-        bookViewModel.getAllAuthorBooks().observe(this, Observer {
-            for(authorBook in it){
-                Log.d("CUSTOM","authorId: ${authorBook.authorId}, bookId: ${authorBook.bookId}")
-            }
-        })
 
         btnAdd.setOnClickListener {
             bookViewModel.insertBook(Book(etTitle.text.toString()))

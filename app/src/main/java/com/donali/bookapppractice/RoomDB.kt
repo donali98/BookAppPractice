@@ -38,9 +38,9 @@ public abstract class RoomDB:RoomDatabase() {
             authorDao.deleteAll()
             bookDao.deleteBooks()
 
-            var author = Author("Gabriel Garcia Marquez")
-            Log.d("CUSTOM",author.toString())
-            authorDao.insertAuthor(author)
+
+//            Log.d("CUSTOM",author.toString())
+            authorDao.insertAuthor(Author("Gabriel Garcia Marquez"))
         }
     }
 
