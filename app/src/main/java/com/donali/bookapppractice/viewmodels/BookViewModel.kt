@@ -46,5 +46,8 @@ class BookViewModel(app: Application): AndroidViewModel(app) {
         authorBooksRepository.insert(authorBook)
     }
 
+    fun updateFavorite(isFv:Boolean,bookId:Long) = viewModelScope.launch (Dispatchers.IO){
+        bookRepository.updateFavorite(isFv,bookId)
+    }
 
 }

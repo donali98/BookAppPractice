@@ -13,5 +13,8 @@ class BookRepository(private val bookDao: BookDao) {
     @WorkerThread
     suspend fun insert(book: Book):Long = bookDao.insertBook(book)
 
+    @WorkerThread
+    suspend fun updateFavorite(isFv: Boolean,bookID:Long) = bookDao.updateFavorite(isFv,bookID)
+
 
 }

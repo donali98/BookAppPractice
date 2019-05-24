@@ -2,7 +2,9 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginBottom="10dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -14,12 +16,25 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_launcher_background" />
 
-        <TextView
-            android:id="@+id/tv_book_title"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_book_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:layout_marginBottom="5dp"
+                android:text="Harry Potter y El Prisonero de Azkaban" />
+
+            <CheckBox
+                android:id="@+id/cv_favorite"
+                android:textSize="25sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favorito" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

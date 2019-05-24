@@ -19,4 +19,7 @@ interface BookDao {
 
     @Query("delete from book")
     fun deleteBooks()
+
+    @Query("update book set isFavorite = :isFv where book.id = :bookID")
+    suspend fun updateFavorite(isFv:Boolean, bookID:Long)
 }

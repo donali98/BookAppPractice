@@ -4,13 +4,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.donali.bookapppractice.entities.Book
 import com.donali.bookapppractice.entities.BookWithAuthors
+import com.donali.bookapppractice.viewmodels.BookViewModel
 
-class BookAdapter(val clickListener:(BookWithAuthors,TextView)->Unit):RecyclerView.Adapter<BookAdapter.ViewHolder>() {
-
+class BookAdapter(val clickListener:(BookWithAuthors,TextView)->Unit,val bookViewModel: BookViewModel):RecyclerView.Adapter<BookAdapter.ViewHolder>() {
     var books:List<BookWithAuthors> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookAdapter.ViewHolder {
@@ -27,10 +28,17 @@ class BookAdapter(val clickListener:(BookWithAuthors,TextView)->Unit):RecyclerVi
 
     inner class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         lateinit var tvBookTitle:TextView
+        lateinit var cvFavorite:CheckBox
 
         fun bind(bookWithAuthor:BookWithAuthors) = with(itemView){
             tvBookTitle = findViewById(R.id.tv_book_title)
+            cvFavorite = findViewById(R.id.cv_favorite)
             tvBookTitle.text = bookWithAuthor.book.title
+            cvFavorite.isChecked = bookWithAuthor.book.isFavorite
+            cvFavorite.setOnCheckedChangeListener { buttonView, isChecked ->
+                bookViewModel.updateFavorite(isChecked,bookWithAuthor.book.id)
+                Log.d("CUSTOM","success")
+            }
             this.setOnClickListener{clickListener(bookWithAuthor,tvBookTitle)}
 ///*            for(authId in bookWithAuthor.authorsIdList){
 //                Log.d("CUSTOM","authorID: $authId")

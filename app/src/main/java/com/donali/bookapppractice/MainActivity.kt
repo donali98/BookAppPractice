@@ -11,6 +11,7 @@ import com.donali.bookapppractice.viewmodels.BookViewModel
 
 class MainActivity : AppCompatActivity(),ActivityHelper {
 
+    lateinit var bookViewModel: BookViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +25,12 @@ class MainActivity : AppCompatActivity(),ActivityHelper {
 
     override fun getLayoutManager(): RecyclerView.LayoutManager  = LinearLayoutManager(this)
     override fun getCustomSupportFragmentMananager(): FragmentManager  = supportFragmentManager
-    override fun getViewModel(): BookViewModel = ViewModelProviders.of(this).get(BookViewModel::class.java)
+    override fun getViewModel(): BookViewModel {
+        if (!::bookViewModel.isInitialized){
+            bookViewModel = ViewModelProviders.of(this).get(BookViewModel::class.java)
+
+        }
+        return bookViewModel
+    }
 
 }

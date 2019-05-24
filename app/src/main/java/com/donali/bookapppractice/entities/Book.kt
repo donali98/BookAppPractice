@@ -5,9 +5,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "book")
-data class Book (
-    @ColumnInfo(name = "title") val title:String
-){
-    @PrimaryKey(autoGenerate = true)  var id:Long = 0
+data class Book(
+        @ColumnInfo(name = "title") val title: String
+) {
+    @ColumnInfo(name = "isFavorite")
+    var isFavorite = false
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0
 
 }

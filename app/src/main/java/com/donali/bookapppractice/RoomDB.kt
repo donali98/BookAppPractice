@@ -16,7 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [Book::class,Author::class,AuthorBooks::class], version = 1,exportSchema = false)
+@Database(entities = [Book::class,Author::class,AuthorBooks::class], version = 2,exportSchema = false)
 
 public abstract class RoomDB:RoomDatabase() {
 
@@ -34,9 +34,9 @@ public abstract class RoomDB:RoomDatabase() {
             }
         }
         suspend fun populateDatabase(authorDao: AuthorDao,bookDao: BookDao,authorBooksDao: AuthorBooksDao){
-            authorBooksDao.deleteAll()
+/*            authorBooksDao.deleteAll()
             authorDao.deleteAll()
-            bookDao.deleteBooks()
+            bookDao.deleteBooks()*/
 
 
 //            Log.d("CUSTOM",author.toString())
